@@ -27,11 +27,31 @@ public class FormInteraction {
             WebElement passwordElem = driver.findElement(passwordSel);
             WebElement loginBtnElem = driver.findElement(loginBtnSel);
 
+            //Get attribute value
+            System.out.println("Login button type: "+loginBtnElem.getAttribute("type"));
+            System.out.println("Login button background color: "+loginBtnElem.getCssValue("background-color"));
+
             //interaction
             usernameElem.clear();
             usernameElem.sendKeys("tomsmith");
             passwordElem.sendKeys("SuperSecretPassword!");
             loginBtnElem.click();
+
+            //Go back to pre page
+            driver.navigate().back();
+
+            //Refesh
+            driver.navigate().refresh();
+
+            //re interact with the element again
+            usernameElem = driver.findElement(usernameSel);
+            passwordElem = driver.findElement(passwordSel);
+            loginBtnElem = driver.findElement(loginBtnSel);
+            usernameElem.sendKeys("tesstusername");
+            passwordElem.sendKeys("tesstusername");
+            loginBtnElem.click();
+
+
             //Debug
             Thread.sleep(2000);
         }catch (Exception e){

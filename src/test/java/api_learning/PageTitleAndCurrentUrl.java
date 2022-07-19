@@ -1,25 +1,28 @@
 package api_learning;
 
-import dev.failsafe.internal.util.Assert;
 import driver.DriverFactory;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.List;
-
-public class ElementDisplaying {
+public class PageTitleAndCurrentUrl {
 
     public static void main(String[] args) {
 
         //get chrome session
         WebDriver driver = DriverFactory.getChormeDriver();
 
+        try {
+
+            //navigte to the target page
             driver.get("https://the-internet.herokuapp.com/login");
-            List <WebElement> elementList=driver.findElements(By.tagName("taolao"));
-            if (!elementList.isEmpty())
-                //Assert.fail("reason..")
+            System.out.println(driver.getTitle());
+            System.out.println(driver.getCurrentUrl());
+
+        }catch (Exception e){
+            e.printStackTrace();
+
+        }
 
         //quit
         driver.quit();

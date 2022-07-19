@@ -1,5 +1,6 @@
 package api_learning;
 
+import dev.failsafe.internal.util.Assert;
 import driver.DriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -26,9 +27,14 @@ public class FormInteractionMultipleMatching {
             List<WebElement> loginFormFieldsElm = driver.findElements(loginInputField);
             final int USERNAME_INDEX = 0;
             final int PASSWORD_INDEX = 1;
-            loginFormFieldsElm.get(USERNAME_INDEX).sendKeys("teo@gmail.co");
-            loginFormFieldsElm.get(PASSWORD_INDEX).sendKeys("12345");
-
+            if (!loginFormFieldsElm.isEmpty()) {
+                loginFormFieldsElm.get(USERNAME_INDEX).sendKeys("teo@gmail.co");
+                loginFormFieldsElm.get(PASSWORD_INDEX).sendKeys("12345");
+            }
+            else {
+                //Assert.fail("...");
+                //
+            }
             //Debug
             Thread.sleep(2000);
         }catch (Exception e){
