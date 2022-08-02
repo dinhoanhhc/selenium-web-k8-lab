@@ -5,13 +5,11 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import url.Urls;
 
 import java.time.Duration;
-import java.util.List;
 
 public class JsAlerts implements Urls {
 
@@ -28,33 +26,30 @@ public class JsAlerts implements Urls {
         try{
             //navitage to target base
             driver.get(baseUrl.concat(jsAlertSlug));
-            WebElement triggerJsAlertBtnElm;
-            Alert alert;
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+//            WebElement triggerJsAlertBtnElm;
+//            Alert alert;
+//            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
 
-            //JS_ALERT
-            triggerJsAlertBtnElm = driver.findElement(jsAlertSel);
-            triggerJsAlertBtnElm.click();
-            alert=wait.until(ExpectedConditions.alertIsPresent());
-            System.out.println("Alert content: "+alert.getText());
-            alert.accept();
+            //JS_ALERT OK
+//            triggerJsAlertBtnElm = driver.findElement(jsAlertSel);
+//            triggerJsAlertBtnElm.click();
+//            alert=wait.until(ExpectedConditions.alertIsPresent());
+
+            handleAlert(driver,jsAlertSel,true);
             System.out.println("Result: "+driver.findElement(resultSel).getText());
 
             //JS_CONFIRM/Cancel
-            triggerJsAlertBtnElm = driver.findElement(jsAlertPromptSel);
-            triggerJsAlertBtnElm.click();
-            alert=wait.until(ExpectedConditions.alertIsPresent());
-            System.out.println("Alert content: "+alert.getText());
-            alert.dismiss();
+//            triggerJsAlertBtnElm = driver.findElement(jsAlertConfirmSel);
+//            triggerJsAlertBtnElm.click();
+//            alert=wait.until(ExpectedConditions.alertIsPresent());
+            handleAlert(driver,jsAlertConfirmSel,false);
             System.out.println("Result: "+driver.findElement(resultSel).getText());
 
             //JS_PROMPT
-            triggerJsAlertBtnElm = driver.findElement(jsAlertPromptSel);
-            triggerJsAlertBtnElm.click();
-            alert=wait.until(ExpectedConditions.alertIsPresent());
-            System.out.println("Alert content: "+alert.getText());
-            alert.sendKeys("My name is Oanh");
-            alert.accept();
+//            triggerJsAlertBtnElm = driver.findElement(jsAlertPromptSel);
+//            triggerJsAlertBtnElm.click();
+//            alert=wait.until(ExpectedConditions.alertIsPresent());
+            handleAlert(driver,jsAlertPromptSel,"My name is Oanh");
             System.out.println("Result: "+driver.findElement(resultSel).getText());
 
 
@@ -73,5 +68,33 @@ public class JsAlerts implements Urls {
         }
 
         driver.quit();
+    }
+
+    public static void handleAlert (WebDriver driver,By triggerAlertSel , boolean isAccepting){
+        Alert alert = getAlert(driver,triggerAlertSel);
+        System.out.println("Alert content: "+alert.getText());
+        if (isAccepting) alert.accept();
+        else alert.dismiss();
+
+    }
+
+    public static void handleAlert (WebDriver driver,By triggerAlertSel, String contentToEnter){
+//        WebElement triggerJsAlertBtnElm = driver.findElement(triggerAlertSel);
+//        Alert alert;
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+//        triggerJsAlertBtnElm.click();
+//        alert=wait.until(ExpectedConditions.alertIsPresent());
+        Alert alert = getAlert(driver,triggerAlertSel);
+        System.out.println("Alert content: "+alert.getText());
+        alert.sendKeys(contentToEnter);
+        alert.accept();
+    }
+
+    private static Alert getAlert(WebDriver driver,By triggerAlertSel){
+        WebElement triggerJsAlertBtnElm = driver.findElement(triggerAlertSel);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        triggerJsAlertBtnElm.click();
+        return wait.until(ExpectedConditions.alertIsPresent());
+
     }
 }
