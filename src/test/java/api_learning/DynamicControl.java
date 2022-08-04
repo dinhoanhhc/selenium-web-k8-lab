@@ -2,6 +2,7 @@ package api_learning;
 
 import driver.DriverFactory;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -29,6 +30,16 @@ public class DynamicControl implements Urls {
 
             //Checkbox form interation
             WebElement checkboxFormElm = driver.findElement(checkboxFormSel);
+            JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
+            //red border
+            boolean isLocal = System.getenv("isLocal") !=null && System.getenv("isLocal").equalsIgnoreCase("true");
+
+            if (isLocal) {
+                javascriptExecutor.executeScript("arguments[0].setAttribute('style', 'border: 4px solid red;')", checkboxFormElm);
+            }
+            //DEBUG ONLLY
+            Thread.sleep(2000);
+
             WebElement checkboxElm = checkboxFormElm.findElement(By.tagName("input"));
             if (!checkboxElm.isSelected()) checkboxElm.click();
 
