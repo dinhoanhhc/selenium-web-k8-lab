@@ -4,47 +4,61 @@ import driver.DriverFactory;
 import models.components.global.footer.CustomerServiceColumnComponent;
 import models.components.global.footer.FooterColumnComponent;
 import models.components.global.footer.InformationColumnComponent;
-import models.pages.BasePage;
 import models.pages.HomePage;
 import org.openqa.selenium.WebDriver;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+import suport.verification.Verifier;
 import url.Urls;
 
 public class FooterTest {
 
-    public static void main(String[] args) {
+    @Test(priority = 1)
+    public void testFooterHomePage() {
         WebDriver driver = DriverFactory.getChormeDriver();
-
-        try {
-            testFooterHomePage(driver);
-            testFooterCategoryPage(driver);
-            testFooterRegisterPage(driver);
-            testFooterLoginPage(driver);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-    }
-
-    private static void testFooterHomePage(WebDriver driver) {
         driver.get(Urls.demoBaseUrl);
-        HomePage homePage = new HomePage(driver);
-        InformationColumnComponent informationColumnComponent =
-                homePage.footerComp().informationColumnComp();
+        try {
+            HomePage homePage = new HomePage(driver);
+            InformationColumnComponent informationColumnComponent =
+                    homePage.footerComp().informationColumnComp();
 
-        CustomerServiceColumnComponent customerServiceColumnComponent =
-                homePage.footerComp().customerServiceColumnComp();
+            CustomerServiceColumnComponent customerServiceColumnComponent =
+                    homePage.footerComp().customerServiceColumnComp();
 
-        testFooterColumn(informationColumnComponent);
-        testFooterColumn(customerServiceColumnComponent);
+            testFooterColumn(informationColumnComponent);
+            testFooterColumn(customerServiceColumnComponent);
+        }catch (Exception ignored){}
+
+        driver.quit();
     }
 
-    private static void testFooterCategoryPage(WebDriver driver) {
+    @Test(priority = 2)
+    public void testFooterCategoryPage() {
+        String actualResult = "Oanh";
+        String expectedResult = "Dinh";
+//        Verifier.verifyEquals(actualResult,expectedResult);
+        //Hard assertion
+        Assert.assertEquals(actualResult, expectedResult,"[ERR] Welcome message is incorrect");
+        Assert.assertTrue(actualResult.equals(expectedResult),"..");
+        Assert.assertFalse(actualResult.equals(expectedResult),"..");
+        Assert.fail("..");
     }
 
-    private static void testFooterRegisterPage(WebDriver driver) {
+    @Test(priority = 3)
+    public void testFooterRegisterPage() {
     }
 
-    private static void testFooterLoginPage(WebDriver driver) {
+    @Test(priority = 4)
+    public void testFooterLoginPage() {
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(1,2);
+        softAssert.assertEquals(true,true);
+        softAssert.assertEquals(2,3);
+
+
+        softAssert.assertAll();
+        System.out.println("hello");
     }
 
     private static void testFooterColumn(FooterColumnComponent footerColumnComponent){
