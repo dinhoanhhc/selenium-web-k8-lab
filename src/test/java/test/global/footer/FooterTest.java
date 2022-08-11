@@ -10,6 +10,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import suport.verification.Verifier;
+import test_flows.global.FooterTestFlow;
 import url.Urls;
 
 public class FooterTest {
@@ -47,6 +48,10 @@ public class FooterTest {
 
     @Test(priority = 3)
     public void testFooterRegisterPage() {
+        WebDriver driver = DriverFactory.getChormeDriver();
+        driver.get(Urls.demoBaseUrl);
+        FooterTestFlow footerTestFlow = new FooterTestFlow(driver);
+        footerTestFlow.verifyFooterComponent();
     }
 
     @Test(priority = 4)
