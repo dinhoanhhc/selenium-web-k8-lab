@@ -24,6 +24,10 @@ public class Component {
         this.wait = new WebDriverWait(this.driver, Duration.ofSeconds(15));
     }
 
+    public WebElement getComponent() {
+        return component;
+    }
+
     public WebElement findElement(By by){
         return component.findElement(by);
     }
@@ -82,7 +86,7 @@ public class Component {
         }
         else if (componentClass.isAnnotationPresent(ComponentXpathSelector.class)){
             return By.xpath(componentClass.getAnnotation(ComponentXpathSelector.class).value());
-
+            
         }
         else {
             throw new IllegalArgumentException("Component class "+ componentClass + "must have annotation"
