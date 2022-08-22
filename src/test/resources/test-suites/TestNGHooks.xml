@@ -3,7 +3,8 @@
 <suite name="Regression Test" >
     <test name="Global UI" >
         <classes>
-            <class name="test.global.footer.FooterTest" />
+            <class name="test.testng.TestNGHook01" />
+            <class name="test.testng.TestNGHook02" />
         </classes>
     </test>
 
