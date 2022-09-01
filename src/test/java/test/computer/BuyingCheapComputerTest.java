@@ -9,7 +9,7 @@ import test_data.computer.DataObjectBuilder;
 import test_flows.computer.OrderComputerFlow;
 import url.Urls;
 
-public class BuyingChecpComputerTest extends BaseTest implements Urls {
+public class BuyingCheapComputerTest extends BaseTest implements Urls {
 
     @Test(dataProvider = "computerData")
     public void testCheapComputerBuying(ComputerData computerData) {
@@ -18,6 +18,7 @@ public class BuyingChecpComputerTest extends BaseTest implements Urls {
                 new OrderComputerFlow<>(driver,CheapComputerComponent.class,computerData);
 
         orderComputerFlow.buildCompSpecAndAddToCart();
+        orderComputerFlow.verifyShoppingCartPage();
     }
 
     @DataProvider
