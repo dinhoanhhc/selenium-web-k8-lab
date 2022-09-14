@@ -18,7 +18,7 @@ public class DriverFactory {
         }
 
         if (OS.isFamilyWindows()){
-            chromeDriverLocation = currentProjectLocation + "\\src\\test\\resources\\drivers\\chromedriver.exe";
+            chromeDriverLocation = currentProjectLocation + "\\src\\test\\resources\\drivers\\chromedriver";
 
         }
         if (chromeDriverLocation.isEmpty()){
