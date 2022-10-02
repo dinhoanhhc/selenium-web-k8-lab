@@ -10,6 +10,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
 
 import java.io.File;
 import java.io.InputStream;
@@ -17,21 +18,32 @@ import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.*;
 
 public class BaseTest {
 
-    protected static WebDriver driver;
+    private final static List<DriverFactory> webdriverThreadPool = Collections.synchronizedList(new ArrayList<>());
+    private static ThreadLocal<DriverFactory> driverThread;
+    private String browser;
 
-    @BeforeTest
-    public void initBrowserSession(){
-        driver= DriverFactory.getChormeDriver();
+    protected WebDriver getDriver(){
+        return driverThread.get().getDriver(browser);
+    }
+
+    @BeforeTest(description = "Init browser session")
+    @Parameters({"browser"})
+    public void initBrowserSession(String browser){
+        this.browser = browser;
+        driverThread = ThreadLocal.withInitial(() ->{
+            DriverFactory webdriverThread = new DriverFactory();
+            webdriverThreadPool.add(webdriverThread);
+            return webdriverThread;
+        });
     }
 
     @AfterTest(alwaysRun = true)
     public void closeBrowserSession(){
-        if (driver != null) driver.quit();
+        driverThread.get().closeBrowserSession();
     }
 
     @AfterMethod
@@ -53,6 +65,7 @@ public class BaseTest {
             String filename = methodName +"-" +y +"-" +m +"-"+d +"-"+hr +"-"+ min +"-" +sec+".png";
 
             //3. Take Screenshot
+            WebDriver driver = driverThread.get().getDriver(browser);
            File sctreenshotBase64Data = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 
            try {
